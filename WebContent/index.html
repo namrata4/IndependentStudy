@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+
+<script src="lib/dropbox-master/dropbox-master/dropbox.js" type="text/javascript"></script>
+<!-- <script src="https://apis.google.com/js/client.js" type="text/javascript"></script>
+<script src="lib/require.min.js" type="text/javascript"></script>
+<script src="lib/itemMirror-decouple-drivers/scripts/ItemMirror.js" type="text/javascript"></script> -->
+<script type="text/javascript">
+//Global Variables
+var store, // The current store, will be important for integrating Google Drive authentication later
+    dropboxClientCredentials, // Credentials used to authenticate Dropbox Client
+    dropboxClient, // Dropbox Client object
+    authenticatedClient = null; // Variable we'll set to the authenticated Dropbox Client after authentication is successful
+
+// Creating the JSON object with our (example) app keys
+dropboxClientCredentials = {
+    key: 'dg26gikgqp6e2fn',
+    secret: 'vthc3wdb5nixnnx'
+};
+
+// Make an new instance of a Dropbox Client with our credentials
+dropboxClient = new Dropbox.Client(dropboxClientCredentials);
+
+// Tell the client to open up our popup on authentication
+dropboxClient.authDriver(new Dropbox.AuthDriver.Popup({
+    receiverUrl: 'http://localhost:8080/IndependentStudy/popupFile.html'
+}));
+
+
+
+
+function connectDropbox() {
+	debugger;
+    // Set the
+    store = "Dropbox";
+        // If there is already an authenticated client, don't try to authenticate again
+    if(authenticatedClient) {
+      //  console.log('Dropbox authenticated');
+      alert('Dropbox authenticated');
+    } else {
+        console.log('Dropbox authenticating...');
+        alert('Dropbox authenticating...');
+        dropboxClient.authenticate(function (error, client) {
+                        // If an error occurs in authentication, log it
+            if(error) {
+                console.log('Dropbox failed to authenticate');
+                alert('Dropbox failed to authenticate');
+            } else {
+                                // Set global variable to authenticated client
+                authenticatedClient = client;
+                                alert('Dropbox authenticated')
+                console.log('Dropbox authenticated');
+                                // Construct the root itemMirror object (more on this in next section)
+               // constructIMObject(store);
+            }
+        });
+    }
+}
+</script>
+</head>
+<body>
+<button onclick="connectDropbox();">Click me</button>
+
+</body>
+</html>
