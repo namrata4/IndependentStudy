@@ -5,9 +5,8 @@
 <title>Insert title here</title>
 
 <script src="lib/dropbox-master/dropbox-master/dropbox.js" type="text/javascript"></script>
-<!-- <script src="https://apis.google.com/js/client.js" type="text/javascript"></script>
-<script src="lib/require.min.js" type="text/javascript"></script>
-<script src="lib/itemMirror-decouple-drivers/scripts/ItemMirror.js" type="text/javascript"></script> -->
+ <script src="https://apis.google.com/js/client.js" type="text/javascript"></script>
+<script src="lib/item-mirror/item-mirror.js" type="text/javascript"></script>
 <script type="text/javascript">
 //Global Variables
 var store, // The current store, will be important for integrating Google Drive authentication later
@@ -54,10 +53,45 @@ function connectDropbox() {
                                 alert('Dropbox authenticated')
                 console.log('Dropbox authenticated');
                                 // Construct the root itemMirror object (more on this in next section)
-               // constructIMObject(store);
+                constructIMObject(store);
             }
         });
     }
+}
+
+
+function constructIMObject(store){
+	var im = new ItemMirror(store, function(error, newMirror) {
+	    if(error) {
+	        console.log(error);
+	    } else {
+	        // Set the global variable to the new itemMirror object
+	        im = newMirror;
+	        console.log("Initial Return = " + im)
+
+	        // At the moment, creating the root iM object returns an object with two associations
+	        // that correspond to the two supported stores. In the future this will be all done within
+	        // the itemMirror code, but for now we need to add this extra step.
+	        associations = im.listAssociations();
+	        store = "Dropbox";
+	        for(var i =0; i < associations.length; i++) {
+	            var displayText = im.getAssociationDisplayText(associations[i]);
+	            if(displayText == store) {
+	                im.createItemMirrorForAssociatedGroupingItem(im.associations[i], function(error, newMirror) {
+	                   if(!error){ 
+	                       im = newMirror;
+	                       console.log("Root Folder = " + im);
+
+	                       // Logic to display or refresh view...
+
+	                   } else {
+	                       console.log(error);
+	                   }
+	                });
+	            }
+	        }
+	    }
+	});
 }
 </script>
 </head>

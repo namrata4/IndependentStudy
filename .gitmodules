@@ -1,0 +1,9 @@
+[submodule "lib\\item-mirror"]
+	path = lib\\item-mirror
+	url = https://github.com/KeepingFoundThingsFound/itemMirror.git
+[submodule "WebContent\\lib\\item-mirror"]
+	path = WebContent\\lib\\item-mirror
+	url = https://github.com/KeepingFoundThingsFound/itemMirror.git
+[submodule "WebContent\\lib\\itemMirror_decouple"]
+	path = WebContent\\lib\\itemMirror_decouple
+	url = https://github.com/KeepingFoundThingsFound/itemMirror.git
